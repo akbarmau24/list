@@ -7,6 +7,6 @@
     {
         "id": "68565cea8c09c",
         "title": "Perbaikan Tugas Akhir",
-        "status": "belum"
+        "status": "selesai"
     }
 ]
