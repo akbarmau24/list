@@ -34,7 +34,14 @@ function saveTasks($file, $tasks_array) {
 // Muat tugas saat halaman dimuat
 $tasks = loadTasks($data_file);
 
-// --- Proses Aksi (Tambah, Ubah Status, Hapus) ---
+// --- Variabel untuk Mode Edit ---
+$editing_task_id = null;
+$editing_task_title = '';
+$form_action_type = 'add_task';
+$form_button_text = 'Tambah Tugas';
+$form_placeholder_text = 'Apa yang perlu dilakukan hari ini?';
+
+// --- Proses Aksi (Tambah, Ubah Status, Hapus, Edit/Update) ---
 
 // 1. Tambah Tugas
 if (isset($_POST['action']) && $_POST['action'] === 'add_task') {
@@ -57,8 +64,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'change_status' && isset($_GET
     $task_id = $_GET['id'];
     foreach ($tasks as &$task) { // Gunakan & untuk referensi agar bisa mengubah array asli
         if ($task['id'] === $task_id) {
-            // Pastikan key 'status' ada sebelum diakses
-            $current_status = $task['status'] ?? 'belum'; // Fallback jika 'status' tidak ada
+            $current_status = $task['status'] ?? 'belum';
             $task['status'] = ($current_status === 'belum') ? 'selesai' : 'belum';
             break;
         }
@@ -72,7 +78,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'change_status' && isset($_GET
 if (isset($_GET['action']) && $_GET['action'] === 'delete_task' && isset($_GET['id'])) {
     $task_id = $_GET['id'];
     $tasks = array_filter($tasks, function($task) use ($task_id) {
-        // Pastikan key 'id' ada sebelum diakses
         return ($task['id'] ?? null) !== $task_id;
     });
     $tasks = array_values($tasks); // Re-index array setelah filter
@@ -80,6 +85,39 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_task' && isset($_GET['
     header('Location: index.php');
     exit();
 }
+
+// 4. Proses Update/Edit Tugas (Setelah form edit disubmit)
+if (isset($_POST['action']) && $_POST['action'] === 'update_task') {
+    $task_id_to_update = $_POST['task_id_to_edit'] ?? '';
+    $new_title = trim($_POST['description'] ?? ''); // Input field namanya tetap 'description'
+    if (!empty($task_id_to_update) && !empty($new_title)) {
+        foreach ($tasks as &$task) {
+            if ($task['id'] === $task_id_to_update) {
+                $task['title'] = $new_title;
+                break;
+            }
+        }
+        saveTasks($data_file, $tasks);
+    }
+    header('Location: index.php'); // Redirect kembali ke halaman utama
+    exit();
+}
+
+// --- Mode Edit: Menyiapkan form jika ada parameter edit_id di URL ---
+if (isset($_GET['edit_id'])) {
+    $edit_id_param = $_GET['edit_id'];
+    foreach ($tasks as $task) {
+        if ($task['id'] === $edit_id_param) {
+            $editing_task_id = $task['id'];
+            $editing_task_title = $task['title'];
+            $form_action_type = 'update_task'; // Mengubah aksi form
+            $form_button_text = 'Simpan Perubahan';
+            $form_placeholder_text = 'Ubah deskripsi tugas...';
+            break;
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -97,9 +135,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_task' && isset($_GET['
 
         <div class="mb-4">
             <form action="index.php" method="POST" class="d-flex">
-                <input type="hidden" name="action" value="add_task">
-                <input type="text" name="description" class="form-control me-2" placeholder="Apa yang perlu dilakukan hari ini?" required>
-                <button type="submit" class="btn btn-primary custom-btn-primary">Tambah Tugas</button>
+                <input type="hidden" name="action" value="<?php echo $form_action_type; ?>">
+                <?php if ($editing_task_id): ?>
+                    <input type="hidden" name="task_id_to_edit" value="<?php echo $editing_task_id; ?>">
+                <?php endif; ?>
+                <input type="text" name="description" class="form-control me-2" placeholder="<?php echo $form_placeholder_text; ?>" value="<?php echo htmlspecialchars($editing_task_title); ?>" required>
+                <button type="submit" class="btn btn-primary custom-btn-primary"><?php echo $form_button_text; ?></button>
+                <?php if ($editing_task_id): ?>
+                    <a href="index.php" class="btn btn-secondary ms-2">Batal Edit</a>
+                <?php endif; ?>
             </form>
         </div>
 
@@ -130,6 +174,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_task' && isset($_GET['
                             <span class="badge <?php echo $isCompleted ? 'bg-success' : 'bg-warning text-dark'; ?> me-3">
                                 <?php echo ucfirst($taskStatus); ?>
                             </span>
+                            <a href="index.php?edit_id=<?php echo $taskId; ?>" class="btn btn-sm btn-outline-info me-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
                             <a href="index.php?action=delete_task&id=<?php echo $taskId; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin ingin menghapus tugas ini?');">
                                 <i class="bi bi-trash"></i> Hapus
                             </a>

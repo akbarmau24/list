@@ -1,7 +1,7 @@
 [
     {
         "id": "68565c63476ae",
-        "title": "Belajar PHP",
+        "title": "Belajar Pascal",
         "status": "belum"
     },
     {

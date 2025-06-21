@@ -5,7 +5,7 @@
     --custom-text-dark: #333;
     --custom-text-muted: #666;
     --custom-border: #e0e0e0;
-    --color-background: #ffffff; /* Tambahkan ini jika belum ada */
+    --color-background: #ffffff;
 }
 
 body {
@@ -14,6 +14,10 @@ body {
 
 .container {
     max-width: 750px; /* Lebar maksimum container sedikit diperlebar */
+}
+
+h1 { /* Override Bootstrap h1 margin top */
+    margin-top: 0 !important;
 }
 
 .custom-title {
@@ -62,42 +66,59 @@ body {
      box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important; /* Bayangan sedikit lebih besar saat hover */
 }
 
-/* --- Gaya untuk Checkbox Kustom (Dipastikan Muncul) --- */
-/* Wrapper untuk link checkbox agar tidak ada underline dan memiliki ukuran */
+/* --- Gaya untuk Checkbox Kustom --- */
 .custom-checkbox-wrapper {
-    display: inline-block; /* Agar bisa diatur width/height */
-    width: 24px; /* Ukuran kotak checkbox */
-    height: 24px;
-    margin-right: 15px; /* Jarak antara checkbox dan elemen berikutnya */
-    text-decoration: none; /* Menghilangkan underline default link */
-    flex-shrink: 0; /* Mencegah kotak menyusut di flex container */
-    position: relative; /* Untuk posisi pseudo-elemen */
+    display: inline-block !important;
+    width: 24px !important;
+    height: 24px !important;
+    margin-right: 15px !important;
+    text-decoration: none !important;
+    flex-shrink: 0 !important;
+    position: relative !important;
 }
 
 .custom-checkbox {
-    display: block; /* Agar bisa mengisi wrapper */
-    width: 100%;
-    height: 100%;
-    border: 2px solid var(--custom-primary); /* Border checkbox */
-    border-radius: 5px; /* Sudut sedikit membulat */
-    background-color: var(--color-background); /* Latar belakang putih */
-    cursor: pointer; /* Menunjukkan ini bisa diklik */
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: 2px solid var(--custom-primary) !important;
+    border-radius: 5px !important;
+    background-color: var(--color-background) !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 .custom-checkbox.checked {
-    background-color: var(--custom-primary); /* Warna saat dicentang */
-    border-color: var(--custom-primary);
+    background-color: var(--custom-primary) !important;
+    border-color: var(--custom-primary) !important;
 }
 
 .custom-checkbox.checked::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px; /* Lebar tanda centang */
-    height: 12px; /* Tinggi tanda centang */
-    border: solid white; /* Warna tanda centang */
-    border-width: 0 3px 3px 0;
-    transform: translate(-50%, -50%) rotate(45deg); /* Rotasi untuk efek centang */
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 6px !important;
+    height: 12px !important;
+    border: solid white !important;
+    border-width: 0 3px 3px 0 !important;
+    transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+
+/* Gaya untuk tombol edit */
+.btn-outline-info {
+    color: #17a2b8 !important;
+    border-color: #17a2b8 !important;
+}
+.btn-outline-info:hover {
+    background-color: #17a2b8 !important;
+    color: white !important;
+}
+.btn-outline-warning { /* Untuk tombol "Ubah ke Belum" */
+    color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+.btn-outline-warning:hover {
+    background-color: #ffc107 !important;
+    color: #212529 !important; /* Teks gelap untuk latar belakang terang */
 }
