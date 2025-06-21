@@ -1,0 +1,103 @@
+/* Palet Warna Kustom */
+:root {
+    --custom-primary: #5a7d7c; /* Teal kalem */
+    --custom-primary-dark: #4a6a69; /* Teal lebih gelap untuk hover */
+    --custom-text-dark: #333;
+    --custom-text-muted: #666;
+    --custom-border: #e0e0e0;
+    --color-background: #ffffff; /* Tambahkan ini jika belum ada */
+}
+
+body {
+    background-color: #f0f0f0 !important; /* Latar belakang abu-abu terang */
+}
+
+.container {
+    max-width: 750px; /* Lebar maksimum container sedikit diperlebar */
+}
+
+.custom-title {
+    color: var(--custom-primary);
+    font-weight: 600;
+}
+
+/* Tombol Primary Kustom */
+.custom-btn-primary {
+    background-color: var(--custom-primary);
+    border-color: var(--custom-primary);
+    color: white;
+}
+
+.custom-btn-primary:hover {
+    background-color: var(--custom-primary-dark);
+    border-color: var(--custom-primary-dark);
+}
+
+/* Item Tugas Kustom */
+.list-group-item {
+    border: 1px solid var(--custom-border);
+    transition: all 0.2s ease-in-out;
+}
+
+.list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Gaya untuk tugas yang sudah selesai */
+.list-group-item.task-completed {
+    background-color: #f8f9fa !important; /* Latar belakang lebih terang */
+    border-color: #dee2e6 !important;
+}
+
+.list-group-item.task-completed .task-title {
+    color: var(--custom-text-muted) !important;
+}
+
+.shadow-sm-custom {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+}
+
+.shadow-sm-custom:hover {
+     box-shadow: 0 .25rem .5rem rgba(0,0,0,.15)!important; /* Bayangan sedikit lebih besar saat hover */
+}
+
+/* --- Gaya untuk Checkbox Kustom (Dipastikan Muncul) --- */
+/* Wrapper untuk link checkbox agar tidak ada underline dan memiliki ukuran */
+.custom-checkbox-wrapper {
+    display: inline-block; /* Agar bisa diatur width/height */
+    width: 24px; /* Ukuran kotak checkbox */
+    height: 24px;
+    margin-right: 15px; /* Jarak antara checkbox dan elemen berikutnya */
+    text-decoration: none; /* Menghilangkan underline default link */
+    flex-shrink: 0; /* Mencegah kotak menyusut di flex container */
+    position: relative; /* Untuk posisi pseudo-elemen */
+}
+
+.custom-checkbox {
+    display: block; /* Agar bisa mengisi wrapper */
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--custom-primary); /* Border checkbox */
+    border-radius: 5px; /* Sudut sedikit membulat */
+    background-color: var(--color-background); /* Latar belakang putih */
+    cursor: pointer; /* Menunjukkan ini bisa diklik */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.custom-checkbox.checked {
+    background-color: var(--custom-primary); /* Warna saat dicentang */
+    border-color: var(--custom-primary);
+}
+
+.custom-checkbox.checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px; /* Lebar tanda centang */
+    height: 12px; /* Tinggi tanda centang */
+    border: solid white; /* Warna tanda centang */
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -50%) rotate(45deg); /* Rotasi untuk efek centang */
+}
